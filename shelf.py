@@ -4,7 +4,12 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, Integer, String
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import relationship
 
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 db_url = os.getenv('DB_URL')
 engine = create_engine(db_url, echo=True, future=True)
@@ -32,6 +37,8 @@ track_table = Table(
 class Record(Base):
     __table__ = record_table
 
+    tracks = relationship("Track")
+
     def __repr__(self):
         return f'Album: {self.record_name}'
 
@@ -43,4 +50,5 @@ class Track(Base):
         return f'Track: {self.track_name}'
 
 
-Base.metadata.create_all(engine)
+if __name__ == '__main__':
+    Base.metadata.create_all(engine)
