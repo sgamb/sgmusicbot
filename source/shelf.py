@@ -1,13 +1,9 @@
 import os
 
-from sqlalchemy import create_engine
-from sqlalchemy import Table, Column, Integer, String
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import relationship
-
 from dotenv import load_dotenv
-
+from sqlalchemy import (Column, ForeignKey, Integer, String, Table,
+                        create_engine)
+from sqlalchemy.orm import declarative_base, relationship
 
 load_dotenv()
 
@@ -15,6 +11,10 @@ db_url = os.getenv('DB_URL')
 engine = create_engine(db_url, echo=True, future=True)
 
 Base = declarative_base()
+
+
+""" ##########TABLES########## """
+
 
 record_table = Table(
     'record_collection',
@@ -34,6 +34,9 @@ track_table = Table(
 )
 
 
+""" ##########MODELS########## """
+
+
 class Record(Base):
     __table__ = record_table
 
@@ -48,6 +51,9 @@ class Track(Base):
 
     def __repr__(self):
         return f'Track: {self.track_name}'
+
+
+""" #########POPULATE######### """
 
 
 if __name__ == '__main__':
