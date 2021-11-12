@@ -19,6 +19,10 @@ engine = create_engine(DB_URL, echo=True, future=True)
 bot = Bot(token=TOKEN)
 
 
+def send_info(text, chat_id=CHAT_ID):
+    bot.send_message(text=text, chat_id=chat_id)
+
+
 def send_track(file_id, chat_id=CHAT_ID):
     """ Sends one track by its file_id """
     try:
