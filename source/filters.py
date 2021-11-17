@@ -1,3 +1,5 @@
+import logging
+
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 from telegram.ext.filters import MessageFilter
@@ -12,17 +14,18 @@ class RecordIdFilter(MessageFilter):
         try:
             record_id = int(message.text)
         except ValueError:
-            send_info('Not an integer')
+            logging.info('Not an integer')
             return False
         count_of_records = func.count(record_table.c.id)
         stmt = select(count_of_records)
         with Session(engine) as session:
             result = session.execute(stmt)
             number_of_records = result.scalar()
-        if record_id <= number_of_records:
+        if 0 < record_id <= number_of_records:
             return True
-        send_info('There is not such a record')
+        logging.debug('There is not such a record')
         return False
 
 
 record_id_filter = RecordIdFilter()
+logging.basicConfig(level=logging.INFO)
