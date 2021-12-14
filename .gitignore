@@ -130,3 +130,6 @@ dmypy.json
 
 # sqlite3
 foo.db
+
+# vim
+*.swp
