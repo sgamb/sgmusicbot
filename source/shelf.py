@@ -3,7 +3,9 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import (Column, ForeignKey, Integer, String, Table,
                         create_engine)
+from sqlalchemy import func, select
 from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import Session
 
 load_dotenv()
 
@@ -53,7 +55,16 @@ class Track(Base):
         return f'Track: {self.track_name}'
 
 
-""" #########POPULATE######### """
+""" ##########UTILS########## """
+
+
+def count_records():
+    count_of_records = func.count(record_table.c.id)
+    stmt = select(count_of_records)
+    with Session(engine) as session:
+        result = session.execute(stmt)
+        number_of_records = result.scalar()
+    return number_of_records
 
 
 if __name__ == '__main__':
