@@ -16,7 +16,7 @@ class RecordIdFilter(MessageFilter):
         number_of_records = shelf.count_records()
         if 0 < record_id <= number_of_records:
             return True
-        logging.debug('There is not such a record')
+        logging.info('There is not such a record')
         return False
 
 
