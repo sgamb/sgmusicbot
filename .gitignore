@@ -134,3 +134,6 @@ local.db
 
 # vim
 *.swp
+
+# pycharm
+.idea
