@@ -2,7 +2,7 @@ import logging
 
 from telegram.ext.filters import MessageFilter
 
-import shelf
+from shelf import Record
 
 
 class RecordIdFilter(MessageFilter):
@@ -13,7 +13,7 @@ class RecordIdFilter(MessageFilter):
         except ValueError:
             logging.info('Not an integer')
             return False
-        number_of_records = shelf.count_records()
+        number_of_records = Record.count()
         if 0 < record_id <= number_of_records:
             return True
         logging.info('There is not such a record')

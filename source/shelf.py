@@ -15,9 +15,6 @@ engine = create_engine(db_url, echo=True, future=True)
 Base = declarative_base()
 
 
-""" ##########TABLES########## """
-
-
 record_table = Table(
     'record_collection',
     Base.metadata,
@@ -36,9 +33,6 @@ track_table = Table(
 )
 
 
-""" ##########MODELS########## """
-
-
 class Record(Base):
     __table__ = record_table
 
@@ -47,24 +41,28 @@ class Record(Base):
     def __repr__(self):
         return f'Album: {self.record_name}'
 
+    @staticmethod
+    def count():
+        count_of_records = func.count(record_table.c.id)
+        stmt = select(count_of_records)
+        with Session(engine) as session:
+            result = session.execute(stmt)
+            number_of_records = result.scalar()
+        return number_of_records
+
+    @staticmethod
+    def get_record_list():
+        stmt = select(Record)
+        with Session(engine) as session:
+            result = session.execute(stmt)
+            return result.scalars().all()
+
 
 class Track(Base):
     __table__ = track_table
 
     def __repr__(self):
         return f'Track: {self.track_name}'
-
-
-""" ##########UTILS########## """
-
-
-def count_records():
-    count_of_records = func.count(record_table.c.id)
-    stmt = select(count_of_records)
-    with Session(engine) as session:
-        result = session.execute(stmt)
-        number_of_records = result.scalar()
-    return number_of_records
 
 
 if __name__ == '__main__':

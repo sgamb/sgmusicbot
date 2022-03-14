@@ -23,8 +23,8 @@ def send_track(file_id, chat_id):
 
 def send_record(record_id, chat_id):
     """ Sends all tracks from album by given record_id """
+    stmt = select(Track.file_id).where(Track.record_id == record_id)
     with Session(engine) as session:
-        stmt = select(Track.file_id).where(Track.record_id == record_id)
         result = session.execute(stmt)
         for file_id in result.scalars().all():
             send_track(file_id, chat_id)
