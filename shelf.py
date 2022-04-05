@@ -14,7 +14,6 @@ engine = create_engine(db_url, echo=True, future=True)
 
 Base = declarative_base()
 
-
 record_table = Table(
     'record_collection',
     Base.metadata,
@@ -42,9 +41,9 @@ class Record(Base):
         return f'Album: {self.record_name}'
 
     @staticmethod
-    def count():
-        count_of_records = func.count(record_table.c.id)
-        stmt = select(count_of_records)
+    def get_number_of_records():
+        count_records = func.count(record_table.c.id)
+        stmt = select(count_records)
         with Session(engine) as session:
             result = session.execute(stmt)
             number_of_records = result.scalar()
