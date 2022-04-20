@@ -32,7 +32,7 @@ def lucky(update: Update, _context: CallbackContext) -> None:
 
 
 def handle_record_id(update: Update, _context: CallbackContext) -> None:
-    """Send given record"""
+    """Get record id as message text and send the record"""
     record_id = int(update.message.text)
     send_record(update, record_id)
 
