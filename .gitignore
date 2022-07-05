@@ -137,3 +137,6 @@ local.db
 
 # pycharm
 .idea
+
+# data
+data/
