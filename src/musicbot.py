@@ -20,7 +20,7 @@ logging.basicConfig(
 def start(update: Update, _context: CallbackContext) -> None:
     """Check the user and reply 'hi' to the '/start' command"""
     user: User = update.effective_user
-    logging.info(f'Start from {user.to_json()=}')
+    logging.info(f'Start from {user.to_json()}')
     user.send_message('Hi!')
 
 
@@ -32,7 +32,9 @@ def lucky(update: Update, _context: CallbackContext) -> None:
 
 
 def handle_record_id(update: Update, _context: CallbackContext) -> None:
-    """Get record id as message text and send the record"""
+    """Sometimes I want to get particular record.
+    In those moments i SELECT * FROM records | grep "search"
+    """
     record_id = int(update.message.text)
     send_record(update, record_id)
 
@@ -45,7 +47,11 @@ def handle_list(update: Update, _context: CallbackContext) -> None:
 
 
 def send_record(update: Update, record_id: int) -> None:
-    """Selecting a recording and sending tracks from it"""
+    """Selecting a recording and sending tracks from it
+    NO MORE DATABASE COMMUNICATION IN HIGH LEVEL
+    NO FUCKIN SESSION
+    update.message.reply_audio -- usefull and depends track.file_id
+    """
     stmt = select(Record).where(Record.id == record_id)
     with Session(engine) as session:
         record = session.scalar(stmt)
@@ -65,17 +71,23 @@ def main() -> None:
     """Start the bot"""
     load_dotenv()
     updater = Updater(token=os.getenv('TOKEN'))
+    #WHAT IS THAT?
     dispatcher = updater.dispatcher
 
+    # WTF>?
+    # Is it kinda list>?
     dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(CommandHandler('lucky', lucky))
+    # Whata fuck?
     dispatcher.add_handler(MessageHandler(record_id_filter, handle_record_id))
     dispatcher.add_handler(CommandHandler('list', handle_list))
     dispatcher.add_handler(CommandHandler('admin', experiment))
 
     updater.start_polling()
+    #WHATA?
     updater.idle()
 
 
 if __name__ == '__main__':
+    #SO PYTHONICH
     main()
