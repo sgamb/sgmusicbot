@@ -15,7 +15,7 @@ engine = create_engine(db_url, echo=True, future=True)
 Base = declarative_base()
 
 record_table = Table(
-    'record_collection',
+    'records',
     Base.metadata,
     Column('id', Integer, primary_key=True),
     Column('record_name', String),
@@ -27,7 +27,7 @@ track_table = Table(
     Base.metadata,
     Column('id', Integer, primary_key=True),
     Column('track_name', String),
-    Column('record_id', ForeignKey('record_collection.id')),
+    Column('record_id', ForeignKey('records.id')),
     Column('file_id', String(100)),
 )
 
