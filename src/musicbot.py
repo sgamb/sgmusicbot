@@ -53,6 +53,14 @@ def send_record(update: Update, record_id: int) -> None:
             update.message.reply_audio(track.file_id)
 
 
+def experiment(update: Update, _context: CallbackContext):
+    update.message.reply_text("Are you admin?")
+    if update.effective_user.id == os.getenv('CHAT_ID'):
+        print("I'm gonna destroy you")
+    else:
+        logging.info(update.effective_user.id, os.getenv('CHAT_ID'))
+
+
 def main() -> None:
     """Start the bot"""
     load_dotenv()
@@ -63,6 +71,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler('lucky', lucky))
     dispatcher.add_handler(MessageHandler(record_id_filter, handle_record_id))
     dispatcher.add_handler(CommandHandler('list', handle_list))
+    dispatcher.add_handler(CommandHandler('admin', experiment))
 
     updater.start_polling()
     updater.idle()
