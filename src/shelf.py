@@ -35,10 +35,16 @@ track_table = Table(
 class Record(Base):
     __table__ = record_table
 
-    tracks = relationship("Track")
+    tracks = relationship("Track", lazy="joined")
 
     def __repr__(self):
         return f'Album: {self.record_name}'
+    
+    @staticmethod
+    def by_id(record_id: int):
+        stmt = select(Record).where(Record.id == record_id)
+        with Session(engine) as session:
+            return session.scalar(stmt)
 
     @staticmethod
     def get_number_of_records():
