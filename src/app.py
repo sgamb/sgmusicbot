@@ -54,10 +54,6 @@ async def lucky(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == '__main__':
     load_dotenv()
     app = ApplicationBuilder().token(os.getenv('TOKEN')).build()
-
-    start_handler = ch('start', start)
-    app.add_handler(start_handler)
-    lucky_handler = ch('lucky', lucky)
-    app.add_handler(lucky_handler)
-
+    app.add_handler(ch('start', start))
+    app.add_handler(ch('lucky', lucky))
     app.run_polling()
