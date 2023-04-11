@@ -7,11 +7,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes
 from telegram.ext import CommandHandler as ch
 
 from main import get_track_file_ids
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+from conversation import years_handler
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -83,4 +79,5 @@ if __name__ == '__main__':
     app.add_handler(ch('start', start))
     app.add_handler(ch('lucky', lucky))
     app.add_handler(ch('album', album))
+    app.add_handler(years_handler)
     app.run_polling()

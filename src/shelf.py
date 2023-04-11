@@ -52,8 +52,7 @@ class Record(Base):
         stmt = select(count_records)
         with Session(engine) as session:
             result = session.execute(stmt)
-            number_of_records = result.scalar()
-        return number_of_records
+            return result.scalar()
 
     @staticmethod
     def get_record_list():
@@ -61,6 +60,20 @@ class Record(Base):
         with Session(engine) as session:
             result = session.execute(stmt)
             return result.scalars().all()
+
+    @staticmethod
+    def years():
+        stmt = select(Record.year).group_by(Record.year)
+        with Session(engine) as session:
+            result = session.execute(stmt)
+            return result.scalars().all()
+
+    @staticmethod
+    def by_year(year: str):
+        stmt = select(Record.id, Record.record_name).where(Record.year == year)
+        with Session(engine) as session:
+            result = session.execute(stmt)
+            return result.all()
 
 
 class Track(Base):
