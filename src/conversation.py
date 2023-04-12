@@ -6,7 +6,7 @@
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/04/11 20:08:36 by sgambari         ###   ########.fr        #
+#    Updated: 2023/04/12 18:19:05 by sgambari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     callback_data=year,
                 )
             ]
-            for year in Record.years()
+            for year in range(3)
         ]
     )
     await update.message.reply_text(
@@ -44,7 +44,7 @@ async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    #TODO: can not recieve query
+    #TODO: can not recieve a query
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -53,7 +53,7 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     callback_data=album.id,
                 )
             ]
-            for album in Record.by_year(update.callback_query.data)
+            for album in range(update.callback_query.data)
         ]
     )
     await update.callback_query.edit_message_text(
@@ -63,7 +63,7 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-ALBM = 0
+ALBUM = 0
 years_handler = ConversationHandler(
     entry_points=[CommandHandler("years", years)],
     states={
