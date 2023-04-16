@@ -6,7 +6,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes
 from telegram.ext import CommandHandler as ch
 
-from main import get_track_file_ids
+from main import send_album
 from conversation import years_handler
 
 
@@ -20,27 +20,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def lucky(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Command handler that send random album.. or not?"""
-    albumID = random.randint(1, 100)
+    album_id = random.randint(1, 100)
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=str(albumID),
+            text=str(album_id),
     )
-
-    if 35 < albumID <= 65:
-        trackFileIDs = get_track_file_ids(albumID)
-        await context.bot.send_message(
-                chat_id=update.effective_chat.id,
-                text="OK, sending audio",
-        )
-        for fileID in trackFileIDs:
-            await context.bot.send_audio(
-                    chat_id=update.effective_chat.id,
-                    audio=fileID,
-            )
-        await context.bot.send_message(
-                chat_id=update.effective_chat.id,
-                text="You are lucky today :)",
-        )
+    if 35 < album_id <= 65:
+        await send_album(album_id, update)
     else:
         await context.bot.send_message(
                 chat_id=update.effective_chat.id,
@@ -49,28 +35,14 @@ async def lucky(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def album(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        albumID = int(update.message.text.split()[-1])
-    except:
+    if (len(context.args) != 1):
         await context.bot.send_message(
                 chat_id=update.effective_chat.id,
                 text="Usage: /album 13",
         )
         return
-    trackFileIDs = get_track_file_ids(albumID)
-    await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="OK, sending audio",
-    )
-    for fileID in trackFileIDs:
-        await context.bot.send_audio(
-                chat_id=update.effective_chat.id,
-                audio=fileID,
-        )
-    await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="Done",
-    )
+    album_id = int(context.args[0])
+    await send_album(album_id, update)
 
 if __name__ == '__main__':
     print('starting')
@@ -80,4 +52,4 @@ if __name__ == '__main__':
     app.add_handler(ch('lucky', lucky))
     app.add_handler(ch('album', album))
     app.add_handler(years_handler)
-    app.run_polling()
+    app.run_polling(allowed_updates=[])

@@ -6,7 +6,7 @@
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/04/11 20:08:36 by sgambari         ###   ########.fr        #
+#    Updated: 2023/04/16 16:21:24 by serge            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ from telegram.ext import (
 )
 
 from shelf import Record
+from main import send_album
+
 
 async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = InlineKeyboardMarkup(
@@ -40,11 +42,10 @@ async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="Years",
             reply_markup=keyboard,
     )
-    return ALBUM
+    return ALBUMS
 
 
 async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    #TODO: can not recieve query
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -60,14 +61,20 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text=f"Albums of {update.callback_query.data}",
             reply_markup=keyboard,
     )
-    return ConversationHandler.END
+    return TRACKS
 
 
-ALBM = 0
+async def tracks(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    album_id = update.callback_query.data
+    await send_album(album_id, update)
+
+
+ALBUMS, TRACKS = range(2)
 years_handler = ConversationHandler(
     entry_points=[CommandHandler("years", years)],
     states={
-        ALBUM: [CallbackQueryHandler(albums)],
+        ALBUMS: [CallbackQueryHandler(albums)],
+        TRACKS: [CallbackQueryHandler(tracks)],
     },
     fallbacks=[],
 )
