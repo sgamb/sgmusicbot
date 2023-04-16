@@ -6,7 +6,7 @@
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/04/16 16:21:24 by serge            ###   ########.fr        #
+#    Updated: 2023/04/16 16:36:06 by serge            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def tracks(update: Update, context: ContextTypes.DEFAULT_TYPE):
     album_id = update.callback_query.data
     await send_album(album_id, update)
+    return ConversationHandler.END
 
 
 ALBUMS, TRACKS = range(2)
