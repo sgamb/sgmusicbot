@@ -6,7 +6,7 @@
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/04/16 16:36:06 by serge            ###   ########.fr        #
+#    Updated: 2023/04/29 13:23:22 by sgambari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,20 +27,34 @@ from main import send_album
 
 
 async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text=year,
-                    callback_data=year,
-                )
-            ]
-            for year in Record.years()
-        ]
-    )
+    years = Record.years()
+    keyboard = []
+    for i in range(0, len(years), 2):
+        if i == (len(years) - 1):
+            keyboard.append(
+                [
+                    InlineKeyboardButton(
+                        text=years[i],
+                        callback_data=years[i],
+                    ),
+                ]
+            )
+        else:
+            keyboard.append(
+                [
+                    InlineKeyboardButton(
+                        text=years[i],
+                        callback_data=years[i],
+                    ),
+                    InlineKeyboardButton(
+                        text=years[i + 1],
+                        callback_data=years[i + 1],
+                    ),
+                ]
+            )
     await update.message.reply_text(
             text="Years",
-            reply_markup=keyboard,
+            reply_markup=InlineKeyboardMarkup(keyboard),
     )
     return ALBUMS
 
