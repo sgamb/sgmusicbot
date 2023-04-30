@@ -63,7 +63,7 @@ class Record(Base):
 
     @staticmethod
     def years():
-        stmt = select(Record.year).group_by(Record.year)
+        stmt = select(Record.year).group_by(Record.year).where(Record.id != 1)
         with Session(engine) as session:
             result = session.execute(stmt)
             return result.scalars().all()
