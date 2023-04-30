@@ -14,18 +14,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(update.to_json())
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="Hi. Please, use the other command",
+            text="Hi. Kindly use the Menu button",
     )
 
 
 async def lucky(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Command handler that send random album.. or not?"""
-    album_id = random.randint(1, 100)
+    album_id = random.randint(1, Record.number_of_records())
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=str(album_id),
     )
-    if 35 < album_id <= 65:
+    if 100 < album_id <= 200:
         await send_album(album_id, update)
     else:
         await context.bot.send_message(

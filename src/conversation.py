@@ -6,7 +6,7 @@
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/04/29 13:23:22 by sgambari         ###   ########.fr        #
+#    Updated: 2023/05/01 00:38:10 by serge            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,31 +29,21 @@ from main import send_album
 async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
     years = Record.years()
     keyboard = []
-    for i in range(0, len(years), 2):
-        if i == (len(years) - 1):
-            keyboard.append(
-                [
-                    InlineKeyboardButton(
-                        text=years[i],
-                        callback_data=years[i],
-                    ),
-                ]
-            )
-        else:
-            keyboard.append(
-                [
-                    InlineKeyboardButton(
-                        text=years[i],
-                        callback_data=years[i],
-                    ),
-                    InlineKeyboardButton(
-                        text=years[i + 1],
-                        callback_data=years[i + 1],
-                    ),
-                ]
-            )
+    for i in range( len(years) // 2):
+        keyboard.append(
+            [
+                InlineKeyboardButton(
+                    text='19' + years[i][2:],
+                    callback_data=years[i],
+                ),
+                InlineKeyboardButton(
+                    text='19' + years[i + (len(years) // 2)][2:],
+                    callback_data=years[i + (len(years) // 2)],
+                ),
+            ]
+        )
     await update.message.reply_text(
-            text="Years",
+            text="Please choose the year:",
             reply_markup=InlineKeyboardMarkup(keyboard),
     )
     return ALBUMS
@@ -72,7 +62,7 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
     )
     await update.callback_query.edit_message_text(
-            text=f"Albums of {update.callback_query.data}",
+            text=f"Albums of 19{update.callback_query.data[2:]}",
             reply_markup=keyboard,
     )
     return TRACKS

@@ -47,7 +47,7 @@ class Record(Base):
             return session.scalar(stmt)
 
     @staticmethod
-    def get_number_of_records():
+    def number_of_records():
         count_records = func.count(record_table.c.id)
         stmt = select(count_records)
         with Session(engine) as session:

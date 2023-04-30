@@ -13,7 +13,7 @@ class RecordIdFilter(MessageFilter):
         except ValueError:
             logging.info('Not an integer')
             return False
-        number_of_records = Record.get_number_of_records()
+        number_of_records = Record.number_of_records()
         if 0 < record_id <= number_of_records:
             return True
         logging.info('There is not such a record')
