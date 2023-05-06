@@ -15,9 +15,6 @@ async def send_album(album_id: int, update: Update):
         message = update.callback_query.message
     except AttributeError:
         message = update.message
-    await message.reply_text(
-            text="OK, sending audio",
-    )
     for file_id in tracks:
         await message.reply_audio(
                 audio=file_id,

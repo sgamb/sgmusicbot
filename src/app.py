@@ -7,7 +7,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes
 from telegram.ext import CommandHandler as ch
 
 from main import send_album
-from conversation import years_handler
+from conversation import years_handler, years_entry_keyboard
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -15,6 +15,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="Hi. Kindly use the Menu button",
+            reply_markup=years_entry_keyboard,
     )
 
 

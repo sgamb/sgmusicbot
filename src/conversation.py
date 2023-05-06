@@ -6,7 +6,7 @@
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/05/01 00:38:10 by serge            ###   ########.fr        #
+#    Updated: 2023/05/06 19:32:43 by serge            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 ),
             ]
         )
-    await update.message.reply_text(
+    await update.callback_query.edit_message_text(
             text="Please choose the year:",
             reply_markup=InlineKeyboardMarkup(keyboard),
     )
@@ -70,16 +70,31 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def tracks(update: Update, context: ContextTypes.DEFAULT_TYPE):
     album_id = update.callback_query.data
+    await update.callback_query.edit_message_text(
+            text="Sending",
+    )
     await send_album(album_id, update)
     return ConversationHandler.END
 
 
 ALBUMS, TRACKS = range(2)
 years_handler = ConversationHandler(
-    entry_points=[CommandHandler("years", years)],
+    entry_points=[CallbackQueryHandler(years, pattern="Years")],
     states={
-        ALBUMS: [CallbackQueryHandler(albums)],
+        ALBUMS: [CallbackQueryHandler(albums, pattern="y_")],
         TRACKS: [CallbackQueryHandler(tracks)],
     },
     fallbacks=[],
+    per_message=True,
+)
+
+years_entry_keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="Years",
+                    callback_data="Years",
+                )
+            ]
+        ]
 )

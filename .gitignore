@@ -141,3 +141,6 @@ local.db
 
 # data
 data/
+
+# examples
+src/nestedconversationbot.py
