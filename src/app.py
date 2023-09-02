@@ -6,8 +6,9 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes
 from telegram.ext import CommandHandler as ch
 
-from main import send_album
-from conversation import years_handler, years_entry_keyboard
+from utils import send_album
+from hierarchy import years_handler, years_entry_keyboard
+from shelf import Record
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):

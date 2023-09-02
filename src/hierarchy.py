@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    conversation.py                                    :+:      :+:    :+:    #
+#    hierarchy.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: sgambari <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 15:21:06 by sgambari          #+#    #+#              #
-#    Updated: 2023/05/06 19:32:43 by serge            ###   ########.fr        #
+#    Updated: 2023/09/02 05:47:15 by serge            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ from telegram.ext import (
 )
 
 from shelf import Record
-from main import send_album
+from utils import send_album
 
 
 async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -33,17 +33,17 @@ async def years(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard.append(
             [
                 InlineKeyboardButton(
-                    text='19' + years[i][2:],
+                    text=years[i][2:],  #TODO: starting from zero
                     callback_data=years[i],
                 ),
                 InlineKeyboardButton(
-                    text='19' + years[i + (len(years) // 2)][2:],
+                    text=years[i + (len(years) // 2)][2:],  #TODO: up to heavean
                     callback_data=years[i + (len(years) // 2)],
                 ),
             ]
         )
     await update.callback_query.edit_message_text(
-            text="Please choose the year:",
+            text="Imagine, that you are in an elevator. Now, pick your floor...",
             reply_markup=InlineKeyboardMarkup(keyboard),
     )
     return ALBUMS
@@ -62,16 +62,17 @@ async def albums(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
     )
     await update.callback_query.edit_message_text(
-            text=f"Albums of 19{update.callback_query.data[2:]}",
+            text=f"Some albums from 19{update.callback_query.data[2:]}...",
             reply_markup=keyboard,
     )
+    #  TODO: ADD GO BACK BUTTTTTTTTTTON
     return TRACKS
 
 
 async def tracks(update: Update, context: ContextTypes.DEFAULT_TYPE):
     album_id = update.callback_query.data
     await update.callback_query.edit_message_text(
-            text="Sending",
+            text="Sending <ALBUM {album_id} TITLE>",  #TODO: get album title
     )
     await send_album(album_id, update)
     return ConversationHandler.END

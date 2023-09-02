@@ -20,5 +20,5 @@ async def send_album(album_id: int, update: Update):
                 audio=file_id,
         )
     await message.reply_text(
-            text="Done",
+            text="Enjoy 😊",
     )

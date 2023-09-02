@@ -143,4 +143,4 @@ local.db
 data/
 
 # examples
-src/nestedconversationbot.py
+examples/nestedconversationbot.py
